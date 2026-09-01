@@ -1,0 +1,597 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   SimplySocial — Landing-Page
+
+   Die Werte hier sind nicht neu erfunden, sondern aus der App übernommen:
+   simplysocial/src/theme/colors.ts, spacing.ts und der Konstante DEPTH.
+   Wenn dort etwas umgestellt wird, gehört es hier nachgezogen — sonst driften
+   Seite und App auseinander, und man merkt es erst, wenn beides nebeneinander
+   auf einem Schirm liegt.
+
+   Die einzige bewusste Abweichung ist die Schrift: Die App benutzt die
+   Systemschrift (Platzhalter, siehe theme/type.ts), die Seite eine echte
+   Display-Schrift. Wenn die App eine bekommt, ist Bricolage Grotesque der
+   naheliegende Kandidat — dann stimmt auch das wieder überein.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* Grundfläche — theme/colors.ts */
+  --bg:       #FAF9F6;   /* Papierweiß, nicht Reinweiß */
+  --surface:  #FFFFFF;
+  --ink:      #17191C;
+  --ink-soft: #6B7280;
+  --line:     #E8E6E0;
+
+  /* Neutrale Aktionsfarbe */
+  --accent-base: #3E4043;
+  --accent-deep: #000000;
+
+  /* Abstände — theme/spacing.ts, alles ein Vielfaches von 4 */
+  --xs: 4px;  --sm: 8px;  --md: 12px; --lg: 16px;
+  --xl: 24px; --xxl: 32px; --xxxl: 48px;
+
+  /* Radien */
+  --r-sm: 10px; --r-md: 14px; --r-lg: 20px; --r-xl: 28px; --r-pill: 999px;
+
+  /* Die Signatur der App: der harte Rand unten am Knopf */
+  --tiefe: 4px;
+
+  --breite: 1160px;
+  --mass: 62ch;               /* Lesebreite für Fließtext */
+
+  --display: 'Bricolage Grotesque', 'Trebuchet MS', sans-serif;
+  --body: 'Hanken Grotesk', 'Segoe UI', sans-serif;
+
+  --ease: cubic-bezier(.2, .7, .3, 1);
+}
+
+/* Die sechs Kategoriefarben. Fünf Werte je Farbe, exakt wie in der App:
+   base (Fläche) · soft (helle Pille) · deep (Umriss + Tiefenrand) ·
+   onBase / onSoft (die Textfarben darauf, gemessen auf mindestens 4,5:1). */
+[data-kat="sport"],    [data-farbe="sport"]    { --base:#EDA803; --soft:#FDF2D8; --deep:#A47402; --on-base:#17191C; --on-soft:#916602; }
+[data-kat="food"],     [data-farbe="food"]     { --base:#2E7D5B; --soft:#E6F2EC; --deep:#1B4A36; --on-base:#FFFFFF; --on-soft:#2D7958; }
+[data-kat="study"],    [data-farbe="study"]    { --base:#3D6BC2; --soft:#E4EBF8; --deep:#243F72; --on-base:#FFFFFF; --on-soft:#3B68BC; }
+[data-kat="culture"],  [data-farbe="culture"]  { --base:#7B4FC2; --soft:#EDE6F8; --deep:#462D6F; --on-base:#FFFFFF; --on-soft:#7B4FC2; }
+[data-kat="outdoor"],  [data-farbe="outdoor"]  { --base:#6B8C28; --soft:#EEF4E0; --deep:#435819; --on-base:#FFFFFF; --on-soft:#5B7722; }
+[data-kat="creative"], [data-farbe="creative"] { --base:#C23D7B; --soft:#F8E4EF; --deep:#74254A; --on-base:#FFFFFF; --on-soft:#B63974; }
+[data-farbe="accent"]                          { --base:#3E4043; --soft:#EFEEEA; --deep:#000000; --on-base:#FFFFFF; --on-soft:#3E4043; }
+
+/* ── Grundlage ───────────────────────────────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.65;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Papierkorn. Die App nennt ihren Hintergrund „Papierweiß, nicht Reinweiß:
+   nimmt dem Screen die Härte" — am großen Schirm braucht es dafür etwas mehr
+   als nur den Farbwert, sonst ist es einfach eine helle Fläche. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: .045;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 800;
+  letter-spacing: -.035em;
+  line-height: 1.02;
+  margin: 0;
+  text-wrap: balance;
+}
+p { margin: 0; }
+a { color: inherit; }
+
+::selection { background: #FDF2D8; color: var(--ink); }
+
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: var(--xs);
+}
+
+.sprung {
+  position: absolute; left: var(--lg); top: -100px; z-index: 100;
+  background: var(--ink); color: var(--bg);
+  padding: var(--md) var(--lg); border-radius: var(--r-md);
+  font-family: var(--display); font-weight: 700; text-decoration: none;
+  transition: top .2s var(--ease);
+}
+.sprung:focus { top: var(--lg); }
+
+/* ── Der Knopf mit Tiefe ─────────────────────────────────────────────────────
+   Die Signatur der App. Beim Drücken wandert er um genau die Randstärke nach
+   unten und der Rand verschwindet — dadurch wirkt er körperlich heruntergedrückt
+   statt nur eingefärbt. `deep` liegt mindestens 2,0:1 gegen `base`, sonst sieht
+   man die Tiefe gar nicht. */
+
+.knopf {
+  --f-base: var(--base, var(--accent-base));
+  --f-deep: var(--deep, var(--accent-deep));
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sm);
+  padding: 15px var(--xl);
+  background: var(--f-base);
+  color: var(--on-base, #fff);
+  border: 0;
+  border-bottom: var(--tiefe) solid var(--f-deep);
+  border-radius: var(--r-md);
+  font-family: var(--display);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .12s var(--ease), border-bottom-width .12s var(--ease), filter .18s var(--ease);
+}
+.knopf:hover { filter: brightness(1.06); }
+.knopf:active {
+  transform: translateY(var(--tiefe));
+  border-bottom-width: 0;
+}
+
+.knopf-klein { padding: 10px var(--lg); font-size: .95rem; border-radius: var(--r-sm); }
+.knopf-gross { padding: 19px var(--xxl); font-size: 1.2rem; border-radius: var(--r-lg); }
+
+/* Der zweite Knopf hat keine Fläche — sonst kämpfen zwei volle Knöpfe
+   nebeneinander um dieselbe Aufmerksamkeit und man klickt keinen. */
+.knopf-leer {
+  background: transparent;
+  color: var(--ink);
+  border: 2px solid var(--line);
+  border-bottom: var(--tiefe) solid var(--line);
+}
+.knopf-leer:hover { border-color: var(--ink-soft); border-bottom-color: var(--ink-soft); filter: none; }
+
+/* ── Kopf ────────────────────────────────────────────────────────────────── */
+
+.kopf {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between; gap: var(--lg);
+  max-width: var(--breite); margin: 0 auto;
+  padding: var(--lg) var(--xl);
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid transparent;
+  transition: border-color .25s var(--ease);
+}
+.kopf.geklebt { border-bottom-color: var(--line); }
+
+.wortmarke {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: 1.45rem;
+  letter-spacing: -.045em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.wm-1 { color: var(--ink); }
+.wm-2 { color: #C23D7B; }
+
+.kopf-nav { display: flex; align-items: center; gap: var(--xl); }
+.kopf-nav > a:not(.knopf) {
+  font-weight: 600; font-size: .97rem; text-decoration: none; color: var(--ink-soft);
+  transition: color .18s var(--ease);
+}
+.kopf-nav > a:not(.knopf):hover { color: var(--ink); }
+@media (max-width: 700px) { .kopf-nav > a:not(.knopf) { display: none; } }
+
+/* ── Hero ────────────────────────────────────────────────────────────────── */
+
+.hero {
+  position: relative; z-index: 2;
+  max-width: var(--breite); margin: 0 auto;
+  padding: clamp(var(--xxl), 7vw, 96px) var(--xl) clamp(64px, 8vw, 120px);
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr);
+  gap: clamp(var(--xxl), 6vw, 72px);
+  align-items: center;
+}
+@media (max-width: 940px) { .hero { grid-template-columns: 1fr; } }
+
+.augenbraue {
+  display: inline-flex; align-items: center; gap: var(--sm);
+  font-size: .87rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: var(--xl);
+}
+.punkt {
+  width: 8px; height: 8px; border-radius: var(--r-pill); background: #2E7D5B;
+  box-shadow: 0 0 0 0 rgba(46,125,91,.55);
+  animation: puls 2.6s ease-out infinite;
+}
+@keyframes puls {
+  0%   { box-shadow: 0 0 0 0 rgba(46,125,91,.5); }
+  70%  { box-shadow: 0 0 0 9px rgba(46,125,91,0); }
+  100% { box-shadow: 0 0 0 0 rgba(46,125,91,0); }
+}
+
+.hero h1 {
+  font-size: clamp(2.9rem, 8.2vw, 5.4rem);
+  line-height: .97;
+  letter-spacing: -.045em;
+  margin-bottom: var(--xl);
+}
+/* Das „jetzt" ist das Wort, um das sich die ganze App dreht — es bekommt als
+   einziges eine Auszeichnung, und zwar den gelben Marker der Kategorie Sport. */
+.hero h1 em {
+  font-style: normal;
+  position: relative;
+  white-space: nowrap;
+}
+.hero h1 em > span { position: relative; z-index: 1; }
+.hero h1 em::after {
+  content: '';
+  position: absolute; left: -.05em; right: -.05em; bottom: .04em;
+  height: .46em;
+  background: #EDA803;
+  border-radius: 4px;
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: marker .75s var(--ease) 1.05s forwards;
+}
+@keyframes marker { to { transform: scaleX(1); } }
+
+.fuehrung {
+  font-size: clamp(1.1rem, 1.9vw, 1.32rem);
+  color: var(--ink-soft);
+  max-width: 46ch;
+  margin-bottom: var(--xxl);
+}
+.fuehrung strong { color: var(--ink); font-weight: 600; }
+
+.hero-knoepfe { display: flex; flex-wrap: wrap; gap: var(--md); margin-bottom: var(--xl); }
+
+.kein-dating { font-size: .97rem; color: var(--ink-soft); }
+.kein-dating strong { color: var(--ink); font-weight: 700; }
+
+/* ── Der Kartenstapel ────────────────────────────────────────────────────── */
+
+.stapel { position: relative; min-height: 480px; }
+@media (max-width: 940px) { .stapel { min-height: 0; } }
+
+.karte {
+  display: flex;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(23,25,28,.04), 0 12px 28px -14px rgba(23,25,28,.18);
+}
+/* Der Farbstreifen links ist das EINZIGE, was die Kategorie an der Karte
+   einfärbt — genau wie in der App. Eine ganz eingefärbte Karte gäbe bei
+   mehreren untereinander einen Flickenteppich. */
+.streifen { width: 6px; flex: 0 0 6px; background: var(--base); }
+.karte-inhalt { flex: 1; min-width: 0; padding: var(--xl); }
+
+.pille {
+  display: inline-block;
+  padding: 5px var(--md);
+  background: var(--soft);
+  color: var(--on-soft);
+  border-radius: var(--r-pill);
+  font-family: var(--display);
+  font-size: .84rem;
+  font-weight: 700;
+  margin-bottom: var(--md);
+}
+.karte h3 { font-size: 1.32rem; letter-spacing: -.025em; margin-bottom: var(--sm); }
+.karte .meta { font-size: .92rem; color: var(--ink-soft); }
+.karte .notiz { font-size: .97rem; color: var(--ink-soft); margin-top: var(--md); }
+
+.karte-fuss {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--md);
+  margin-top: var(--lg); padding-top: var(--lg);
+  border-top: 1px solid var(--line);
+  font-size: .92rem;
+}
+.wer { display: inline-flex; align-items: center; gap: var(--sm); font-weight: 600; }
+.avatar {
+  display: inline-grid; place-items: center;
+  width: 30px; height: 30px; border-radius: var(--r-pill);
+  background: var(--soft); font-size: .95rem;
+}
+.plaetze { color: var(--ink-soft); }
+
+.knopf-voll { width: 100%; margin-top: var(--lg); }
+
+.verabredet {
+  margin-top: var(--lg);
+  padding: var(--md) var(--lg);
+  background: var(--soft);
+  color: var(--on-soft);
+  border-radius: var(--r-md);
+  font-family: var(--display);
+  font-weight: 700;
+  text-align: center;
+  animation: auftauchen .45s var(--ease) both;
+}
+.haken { font-style: normal; }
+
+/* Der Fächer. Auf schmalen Schirmen fällt er weg — dort steht nur die Karte,
+   die man anfassen kann. Drei gestapelte Karten am Handy sind Deko, die scrollt. */
+/* Der Fächer. Die beiden Nebenkarten sind Deko — aber Deko, die man LESEN können
+   muss, sonst wirkt sie wie ein Darstellungsfehler. Deshalb sind sie so gesetzt,
+   dass ihr Titel VOLLSTÄNDIG über bzw. unter der Hauptkarte steht und nur ihr
+   unterer bzw. oberer Rand dahinter verschwindet. Beim ersten Versuch lagen sie
+   übereinander und die Überschrift „Mathe-Schularbeit lernen" war mittendurch
+   geschnitten — im Browser sofort zu sehen, im Code nicht. */
+@media (min-width: 941px) {
+  .stapel { min-height: 640px; }
+  .karte-hinten, .karte-mitte, .karte-vorn { position: absolute; }
+  .karte-hinten {
+    top: 0; left: 16%; right: 0;
+    transform: rotate(-2.6deg);
+    z-index: 1;
+  }
+  .karte-mitte { top: 158px; left: 0; right: 13%; transform: rotate(1.2deg); z-index: 3; }
+  /* 470px ist gemessen, nicht geschätzt: Die Mittelkarte endet 486px unter der
+     Oberkante des Stapels, und die Pille der vorderen Karte sitzt 34px unter deren
+     Oberkante. Alles darüber schneidet sie an — eine halbe Pille sieht kaputt aus. */
+  .karte-vorn {
+    top: 470px; left: 22%; right: 0;
+    transform: rotate(-1.8deg);
+    z-index: 2;
+  }
+  .karte-hinten, .karte-vorn { transition: transform .5s var(--ease); }
+  .karte-hinten .karte-inhalt, .karte-vorn .karte-inhalt { padding-bottom: var(--lg); }
+  .stapel:hover .karte-hinten { transform: rotate(-4deg) translateY(-10px); }
+  .stapel:hover .karte-vorn   { transform: rotate(-3deg) translateY(10px); }
+}
+@media (max-width: 940px) {
+  .karte-hinten, .karte-vorn { display: none; }
+  .karte-mitte { max-width: 460px; }
+}
+
+/* ── Das Farbband ────────────────────────────────────────────────────────── */
+
+.band {
+  position: relative; z-index: 2;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+  padding: var(--xl) 0;
+  overflow: hidden;
+  --lauf: 46s;
+}
+.band-lauf { display: flex; width: max-content; animation: lauf var(--lauf) linear infinite; }
+.band:hover .band-lauf { animation-play-state: paused; }
+@keyframes lauf { to { transform: translateX(-50%); } }
+
+.band-liste {
+  display: flex; align-items: center; gap: var(--xl);
+  list-style: none; margin: 0; padding: 0 calc(var(--xl) / 2);
+}
+.band-liste li {
+  display: inline-flex; align-items: center; gap: var(--sm);
+  padding: 9px var(--lg);
+  background: var(--soft);
+  color: var(--on-soft);
+  border-radius: var(--r-pill);
+  font-family: var(--display);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.band-liste .beispiel {
+  font-family: var(--body); font-weight: 500; color: var(--ink-soft); opacity: .85;
+}
+
+/* ── Abschnitte ──────────────────────────────────────────────────────────── */
+
+.abschnitt {
+  position: relative; z-index: 2;
+  max-width: var(--breite); margin: 0 auto;
+  /* 11vw waren am 1440er-Schirm 140px oben UND unten — zwischen zwei Abschnitten
+     also 280px Nichts. Großzügig ist gut, leer ist etwas anderes; im Browser sah es
+     aus, als fehle dort etwas. */
+  padding: clamp(56px, 7vw, 100px) var(--xl);
+}
+
+.nummer {
+  font-family: var(--display);
+  font-size: .9rem; font-weight: 700; letter-spacing: .18em;
+  color: var(--ink-soft);
+  margin-bottom: var(--lg);
+}
+.nummer::after {
+  content: ''; display: block; width: 44px; height: 3px;
+  background: var(--ink); margin-top: var(--md); border-radius: 2px;
+}
+
+.abschnitt > h2, .schluss h2 {
+  font-size: clamp(2rem, 4.6vw, 3.1rem);
+  max-width: 20ch;
+  margin-bottom: clamp(var(--xxl), 4vw, 56px);
+}
+
+/* Schritte */
+.schritte { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--xl); grid-template-columns: repeat(3, 1fr); }
+@media (max-width: 880px) { .schritte { grid-template-columns: 1fr; } }
+
+.schritt {
+  position: relative;
+  padding: var(--xxl) var(--xl) var(--xl);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-bottom: var(--tiefe) solid var(--base);
+  border-radius: var(--r-lg);
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+}
+.schritt:hover { transform: translateY(-4px); box-shadow: 0 18px 34px -22px rgba(23,25,28,.3); }
+.schritt-zahl {
+  position: absolute; top: calc(var(--xl) * -1 + 4px); left: var(--xl);
+  display: grid; place-items: center;
+  width: 44px; height: 44px;
+  background: var(--base); color: var(--on-base);
+  border-bottom: var(--tiefe) solid var(--deep);
+  border-radius: var(--r-md);
+  font-family: var(--display); font-size: 1.15rem; font-weight: 800;
+}
+.schritt h3 { font-size: 1.28rem; margin: var(--md) 0 var(--md); letter-spacing: -.025em; }
+.schritt p { color: var(--ink-soft); font-size: 1rem; }
+.schritt strong { color: var(--ink); font-weight: 600; }
+
+/* Warum */
+.warum-raster {
+  display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+  gap: clamp(var(--xxl), 5vw, 64px);
+  align-items: start;
+}
+@media (max-width: 880px) { .warum-raster { grid-template-columns: 1fr; } }
+
+.zitat {
+  margin: 0;
+  font-family: var(--display);
+  font-size: clamp(1.5rem, 3vw, 2.05rem);
+  font-weight: 700;
+  line-height: 1.16;
+  letter-spacing: -.03em;
+  padding-left: var(--xl);
+  border-left: 5px solid #EDA803;
+  text-wrap: balance;
+}
+.warum-text { display: grid; gap: var(--lg); max-width: var(--mass); color: var(--ink-soft); }
+.warum-text em { color: var(--ink); font-style: normal; font-weight: 600; }
+
+.stand {
+  list-style: none; margin: clamp(var(--xxl), 5vw, 64px) 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--xl);
+  border-top: 1px solid var(--line); padding-top: var(--xxl);
+}
+@media (max-width: 760px) { .stand { grid-template-columns: 1fr; gap: var(--xxl); } }
+.stand li { display: grid; gap: var(--sm); }
+.stand-wert {
+  font-family: var(--display); font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 800; letter-spacing: -.035em;
+}
+.stand-was { font-size: .97rem; color: var(--ink-soft); }
+
+/* Wir */
+.wir-satz { font-size: clamp(1.15rem, 2.2vw, 1.4rem); max-width: var(--mass); margin-bottom: clamp(var(--xxl), 4vw, 56px); }
+
+.namen {
+  list-style: none; margin: 0 0 clamp(var(--xl), 3.5vw, 44px); padding: 0;
+  display: flex; flex-wrap: wrap; gap: var(--md) var(--xl);
+}
+.namen li {
+  font-family: var(--display);
+  font-size: clamp(2rem, 6.5vw, 3.6rem);
+  font-weight: 800;
+  letter-spacing: -.045em;
+  line-height: 1.05;
+}
+/* Jeder Name bekommt eine der Kategoriefarben — nicht als Rolle, sondern damit
+   die vier zusammen dieselbe Palette ergeben wie der Feed. */
+.namen li span {
+  position: relative;
+  background-image: linear-gradient(var(--base), var(--base));
+  background-repeat: no-repeat;
+  background-position: 0 88%;
+  background-size: 100% .12em;
+  transition: background-size .5s var(--ease);
+}
+.js .namen li span { background-size: 0% .12em; }
+.js .namen li.sichtbar span { background-size: 100% .12em; }
+
+.wir-nach { color: var(--ink-soft); max-width: var(--mass); }
+
+/* Schluss */
+.schluss {
+  position: relative; z-index: 2;
+  max-width: var(--breite); margin: 0 auto;
+  padding: clamp(64px, 8vw, 112px) var(--xl) clamp(72px, 9vw, 120px);
+  text-align: center;
+  border-top: 1px solid var(--line);
+}
+.schluss h2 { max-width: none; margin: 0 auto var(--lg); }
+.schluss p { color: var(--ink-soft); max-width: 48ch; margin: 0 auto var(--xxl); }
+
+/* Fuß */
+.fuss {
+  position: relative; z-index: 2;
+  max-width: var(--breite); margin: 0 auto;
+  padding: var(--xl) var(--xl) var(--xxxl);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+  gap: var(--md);
+  border-top: 1px solid var(--line);
+  font-size: .92rem; color: var(--ink-soft);
+}
+.wortmarke-klein { font-size: 1.1rem; }
+
+/* ── Bewegung ────────────────────────────────────────────────────────────────
+   Zwei Sorten: der gestaffelte Auftritt beim Laden (data-auf) und das Auftauchen
+   beim Scrollen (.reveal). Beides schiebt nur ein paar Pixel und blendet auf —
+   eine Seite, auf der alles hereinfliegt, liest sich wie eine Vorlage. */
+
+@keyframes auftauchen { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* Alles Versteckte hängt an `.js` am <html>. Diese Klasse setzt ein Inline-Skript
+   im <head>, bevor irgendetwas gezeichnet wird. Ohne JavaScript — Skript blockiert,
+   Fehler weiter oben, alter Browser — greift keine dieser Regeln und die Seite steht
+   einfach da. Ein Aufblenden, das nicht kommt, wäre sonst eine weiße Seite; genau das
+   war hier beim ersten Blick im Browser der Fall. */
+.js [data-auf] { opacity: 0; animation: auftauchen .7s var(--ease) both; }
+.js [data-auf="1"] { animation-delay: .05s; }
+.js [data-auf="2"] { animation-delay: .15s; }
+.js [data-auf="3"] { animation-delay: .28s; }
+.js [data-auf="4"] { animation-delay: .42s; }
+.js [data-auf="5"] { animation-delay: .54s; }
+
+.js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s var(--ease), transform .7s var(--ease); }
+.js .reveal.sichtbar { opacity: 1; transform: none; }
+.schritte .schritt:nth-child(2) { transition-delay: .1s; }
+.schritte .schritt:nth-child(3) { transition-delay: .2s; }
+.namen li:nth-child(2) { transition-delay: .08s; }
+.namen li:nth-child(3) { transition-delay: .16s; }
+.namen li:nth-child(4) { transition-delay: .24s; }
+.stand li:nth-child(2) { transition-delay: .1s; }
+.stand li:nth-child(3) { transition-delay: .2s; }
+
+/* ── Konfetti ────────────────────────────────────────────────────────────────
+   Der Moment, auf den die App zuläuft. Aus DOM-Schnipseln statt Canvas: Es sind
+   dreißig Stück, einmal im Leben der Seite — dafür lohnt kein Canvas, und JS,
+   das nur Elemente einsetzt und wieder wegräumt, kann nicht viel kaputtmachen. */
+
+.konfetti-buehne { position: fixed; inset: 0; z-index: 30; pointer-events: none; overflow: hidden; }
+.schnipsel {
+  position: absolute;
+  width: 9px; height: 14px;
+  border-radius: 2px;
+  will-change: transform, opacity;
+  animation: fallen var(--dauer) cubic-bezier(.25,.6,.4,1) forwards;
+}
+@keyframes fallen {
+  0%   { opacity: 1; transform: translate3d(0,0,0) rotate(0deg); }
+  100% { opacity: 0; transform: translate3d(var(--dx), var(--dy), 0) rotate(var(--dreh)); }
+}
+
+/* ── Wer weniger Bewegung eingestellt hat, bekommt weniger ───────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  .js [data-auf], .js .reveal { opacity: 1; transform: none; }
+  .hero h1 em::after { transform: scaleX(1); }
+  .js .namen li span { background-size: 100% .12em; }
+  .band-lauf { animation: none; }
+}

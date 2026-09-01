@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SimplySocial — Finde Leute, die jetzt Lust haben.</title>
+<meta name="description" content="Poste, was du vorhast. Wer mitmachen will, meldet sich. Du entscheidest, wer dabei ist. Eine Treff-App für Wien. Kein Dating.">
+<meta name="theme-color" content="#FAF9F6">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="SimplySocial — Finde Leute, die jetzt Lust haben.">
+<meta property="og:description" content="Poste, was du vorhast. Wer mitmachen will, meldet sich. Du entscheidest, wer dabei ist. Eine Treff-App für Wien.">
+<meta property="og:locale" content="de_AT">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Setzt `.js`, BEVOR das Stylesheet greift. Alles, was sich zum Auftauchen erst
+     versteckt, hängt an dieser Klasse — ohne JavaScript bleibt die Seite sichtbar,
+     statt weiß zu sein. -->
+<script>document.documentElement.className += ' js';</script>
+
+<link rel="stylesheet" href="schriften.css">
+<link rel="stylesheet" href="stil.css">
+<link rel="preload" href="schriften/BricolageGrotesque-latin-400-800.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="schriften/HankenGrotesk-latin-400-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%23FAF9F6'/><circle cx='12' cy='16' r='6' fill='%23EDA803'/><circle cx='20' cy='16' r='6' fill='%23C23D7B' fill-opacity='.85'/></svg>">
+</head>
+<body>
+
+<a class="sprung" href="#inhalt">Zum Inhalt springen</a>
+
+<header class="kopf" id="kopf">
+  <a class="wortmarke" href="#" aria-label="SimplySocial, zum Seitenanfang">
+    <span class="wm-1">Simply</span><span class="wm-2">Social</span>
+  </a>
+  <nav class="kopf-nav" aria-label="Hauptnavigation">
+    <a href="#ablauf">Wie&nbsp;es&nbsp;geht</a>
+    <a href="#wir">Wer&nbsp;wir&nbsp;sind</a>
+    <a class="knopf knopf-klein" href="https://ianfhorak-jpg.github.io/simplysocial/" data-farbe="accent">Prototyp öffnen</a>
+  </nav>
+</header>
+
+<main id="inhalt">
+
+<!-- ══ HERO ═════════════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="augenbraue" data-auf="1">
+      <span class="punkt" aria-hidden="true"></span> Wien · Prototyp seit September 2026
+    </p>
+    <h1 data-auf="2">
+      Finde Leute,<br>
+      die <em><span>jetzt</span></em><br>
+      Lust haben.
+    </h1>
+    <p class="fuehrung" data-auf="3">
+      Poste, was du vorhast. Wer mitmachen will, meldet sich.
+      <strong>Du entscheidest, wer dabei ist.</strong>
+    </p>
+    <div class="hero-knoepfe" data-auf="4">
+      <a class="knopf" href="https://ianfhorak-jpg.github.io/simplysocial/" data-farbe="sport">
+        Prototyp öffnen
+      </a>
+      <a class="knopf knopf-leer" href="#ablauf">Wie es geht</a>
+    </div>
+    <p class="kein-dating" data-auf="5">
+      <strong>Kein Dating.</strong> Und nicht nur Sport.
+    </p>
+  </div>
+
+  <!-- Der Stapel rechts: echte Karten aus der App, nachgebaut.
+       Die mittlere ist anfassbar — das ist der Moment, um den die ganze App gebaut ist. -->
+  <div class="stapel" data-auf="3" aria-label="Beispiel-Posts aus der App">
+    <article class="karte karte-hinten" data-kat="study" aria-hidden="true">
+      <span class="streifen"></span>
+      <div class="karte-inhalt">
+        <span class="pille">📚 Lernen</span>
+        <h3>Mathe-Schularbeit lernen</h3>
+        <p class="meta">Morgen 15:00 · 1070 Wien</p>
+      </div>
+    </article>
+
+    <article class="karte karte-mitte" data-kat="sport" id="spiel">
+      <span class="streifen"></span>
+      <div class="karte-inhalt">
+        <span class="pille">🏃 Sport</span>
+        <h3>Tennis spielen</h3>
+        <p class="meta">Heute 17:00 · 1220 Wien</p>
+        <p class="notiz">Hab zwei Schläger dabei.</p>
+        <div class="karte-fuss">
+          <span class="wer"><span class="avatar">🌿</span> Lea</span>
+          <span class="plaetze">2 Plätze frei</span>
+        </div>
+        <button class="knopf knopf-voll" data-farbe="sport" id="dabei">
+          Bin dabei
+        </button>
+        <p class="verabredet" id="verabredet" hidden>
+          <span class="haken">🎉</span> Ihr seid verabredet.
+        </p>
+      </div>
+    </article>
+
+    <article class="karte karte-vorn" data-kat="food" aria-hidden="true">
+      <span class="streifen"></span>
+      <div class="karte-inhalt">
+        <span class="pille">☕ Essen</span>
+        <h3>Kaffee nach der Schule</h3>
+        <p class="meta">Heute 16:00 · 1140 Wien</p>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ══ KATEGORIEN ═══════════════════════════════════════════════════════════ -->
+<section class="band" aria-label="Die sechs Kategorien">
+  <div class="band-lauf">
+    <ul class="band-liste"></ul>
+    <ul class="band-liste" aria-hidden="true"></ul>
+  </div>
+</section>
+
+<!-- ══ ABLAUF ═══════════════════════════════════════════════════════════════ -->
+<section class="abschnitt" id="ablauf">
+  <p class="nummer">01</p>
+  <h2 class="reveal">Drei Schritte, dann steht ihr euch gegenüber.</h2>
+
+  <ol class="schritte">
+    <li class="schritt reveal" data-kat="sport">
+      <span class="schritt-zahl">1</span>
+      <h3>Du postest, was du vorhast</h3>
+      <p>
+        „Tennis, 1220, heute 17:00." Kategorie, Zeit, Bezirk, wie viele mitkönnen.
+        Dreißig Sekunden, mehr ist es nicht — und dein Post läuft am Ende des Tages
+        von selbst ab.
+      </p>
+    </li>
+    <li class="schritt reveal" data-kat="culture">
+      <span class="schritt-zahl">2</span>
+      <h3>Wer Zeit hat, meldet sich</h3>
+      <p>
+        Dein Post steht im Feed. Ein Tipp auf <strong>„Bin dabei"</strong>, ein Satz
+        dazu — damit du nicht nur einen Namen siehst, sondern weißt, wer da kommt.
+      </p>
+    </li>
+    <li class="schritt reveal" data-kat="creative">
+      <span class="schritt-zahl">3</span>
+      <h3>Du sagst Ja. Erst dann geht der Chat auf</h3>
+      <p>
+        Niemand schreibt dich ungefragt an. <strong>Wen du triffst, entscheidest du</strong> —
+        und den Treffpunkt macht ihr euch danach im Chat aus, nicht vorher öffentlich.
+      </p>
+    </li>
+  </ol>
+</section>
+
+<!-- ══ WARUM ════════════════════════════════════════════════════════════════ -->
+<section class="abschnitt abschnitt-warum" id="warum">
+  <p class="nummer">02</p>
+  <h2 class="reveal">Warum wir das bauen</h2>
+
+  <div class="warum-raster">
+    <blockquote class="zitat reveal">
+      Man hätte Zeit. Man schreibt in vier Gruppen. Zwei antworten nicht, einer kann
+      nicht — und am Ende sitzt man daheim.
+    </blockquote>
+    <div class="warum-text reveal">
+      <p>
+        Das ist der Nachmittag, den wir alle kennen. Es fehlt nicht an Leuten und
+        nicht an Lust. Es fehlt der eine Ort, an dem beides gleichzeitig sichtbar ist.
+      </p>
+      <p>
+        Instagram zeigt, was Leute <em>gemacht haben</em>. Wir wollten etwas, das zeigt,
+        was Leute <em>gerade vorhaben</em> — kurz, unaufgeregt und wieder weg, sobald es
+        vorbei ist. Nichts in dieser App überlebt seinen Anlass.
+      </p>
+      <p>
+        Und weil eine App, die Fremde zusammenbringt, sich das verdienen muss:
+        Du bestätigst jede Anfrage selbst, es gibt keine Karte und kein GPS —
+        nur den Bezirk — und melden und blockieren waren von Anfang an drin,
+        nicht als Nachtrag.
+      </p>
+    </div>
+  </div>
+
+  <ul class="stand">
+    <li class="reveal"><span class="stand-wert">Wien</span><span class="stand-was">Wo wir anfangen — eine Stadt, eine Schule, dann weiter</span></li>
+    <li class="reveal"><span class="stand-wert">Fertig</span><span class="stand-was">Der Prototyp läuft, von der ersten Idee bis zum Chat</span></li>
+    <li class="reveal"><span class="stand-wert">Als&nbsp;Nächstes</span><span class="stand-was">Echte Nutzer, echtes Backend, dann der App&nbsp;Store</span></li>
+  </ul>
+</section>
+
+<!-- ══ WIR ══════════════════════════════════════════════════════════════════ -->
+<section class="abschnitt" id="wir">
+  <p class="nummer">03</p>
+  <h2 class="reveal">Wer wir sind</h2>
+
+  <p class="wir-satz reveal">
+    Wir sind vier, wir kommen aus Wien, und wir bauen SimplySocial nebenbei —
+    zwischen Schule und allem anderen.
+  </p>
+
+  <ul class="namen">
+    <li class="reveal" data-kat="sport"><span>Ian</span></li>
+    <li class="reveal" data-kat="study"><span>Christoph</span></li>
+    <li class="reveal" data-kat="outdoor"><span>Leopold</span></li>
+    <li class="reveal" data-kat="creative"><span>Daria</span></li>
+  </ul>
+
+  <p class="wir-nach reveal">
+    Einer schreibt den Code, zwei kümmern sich ums Aussehen, einer hält den Rest
+    zusammen. Ehrlich gesagt sitzen wir bei den meisten Entscheidungen aber sowieso
+    zu viert — deshalb steht hier auch kein Organigramm.
+  </p>
+</section>
+
+<!-- ══ SCHLUSS ══════════════════════════════════════════════════════════════ -->
+<section class="schluss">
+  <h2 class="reveal">Schau es dir an.</h2>
+  <p class="reveal">
+    Der Prototyp läuft im Browser, ohne Installation und ohne Anmeldung.
+    Alle Posts darin sind erfunden — sag uns, was sich falsch anfühlt.
+  </p>
+  <a class="knopf knopf-gross reveal" href="https://ianfhorak-jpg.github.io/simplysocial/" data-farbe="creative">
+    Prototyp öffnen
+  </a>
+</section>
+
+</main>
+
+<footer class="fuss">
+  <span class="wortmarke wortmarke-klein">
+    <span class="wm-1">Simply</span><span class="wm-2">Social</span>
+  </span>
+  <p>Wien · 2026 · Ein früher Prototyp, keine fertige App.</p>
+</footer>
+
+<div class="konfetti-buehne" id="konfetti" aria-hidden="true"></div>
+
+<script src="seite.js"></script>
+</body>
+</html>
