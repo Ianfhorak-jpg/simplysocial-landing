@@ -1,7 +1,7 @@
 /*
  * Landing-Page — das bisschen Verhalten, das die Seite braucht.
  *
- * Vier Sachen, mehr nicht: das Farbband füllen, beim Scrollen auftauchen lassen,
+ * Vier Sachen, mehr nicht: die Farbreihe füllen, beim Scrollen auftauchen lassen,
  * die Kopfzeile absetzen, sobald man gescrollt hat, und der Konfetti-Moment.
  * Alles ohne Bibliothek — die Seite soll auf einem alten Handy in einem
  * Schul-WLAN schnell sein, und jede Abhängigkeit ist ein Grund, warum sie es
@@ -13,10 +13,13 @@
 
   const wenigerBewegung = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* ── 1. Das Farbband ─────────────────────────────────────────────────────
+  /* ── 1. Die Farbreihe ────────────────────────────────────────────────────
      Dieselben sechs Kategorien wie in der App (src/config/categories.ts).
-     Zweimal in den DOM, damit die Schleife nahtlos wieder von vorn beginnt:
-     Die Animation schiebt um -50 %, also genau um eine der beiden Listen. */
+     Bis 01.09.2026 lief die Reihe als Endlosband nach links und stand deshalb
+     zweimal im DOM — die Animation schob um -50 %, also genau um eine der beiden
+     Listen. Ian mochte die Bewegung nicht; seit sie weg ist, reicht eine Liste.
+     `querySelectorAll` bleibt trotzdem stehen: Es tut bei einer Liste dasselbe
+     und macht aus einer zweiten kein kaputtes Skript. */
 
   const KATEGORIEN = [
     { id: 'sport',    emoji: '🏃', label: 'Sport',   beispiel: 'Tennis, Laufen, Bouldern' },

@@ -361,24 +361,33 @@ a { color: inherit; }
   .karte-mitte { max-width: 460px; }
 }
 
-/* ── Das Farbband ────────────────────────────────────────────────────────── */
+/* ── Die Farbreihe ───────────────────────────────────────────────────────── */
+/* Bis zum 01.09.2026 lief das hier als Endlosband nach links. Ians Rückmeldung,
+   nachdem er die Seite am Handy gesehen hat: „Dieser Balken, der sich immer nach
+   links bewegt, das mag ich irgendwie nicht." Jetzt stehen dieselben sechs Farben
+   still da.
+
+   Mit der Bewegung ist die Struktur weggefallen, die es NUR für sie gab: die
+   doppelte Liste im HTML (damit die Schleife bei -50 % nahtlos von vorn beginnt)
+   und `width: max-content` (damit die Reihe überhaupt breiter als der Schirm sein
+   darf). Beides ist bei einer stehenden Reihe genau falsch herum — sie soll
+   umbrechen, nicht seitlich weglaufen. Nur `animation: none` hätte sechs
+   Kategorien zwölfmal stehen lassen. */
 
 .band {
   position: relative; z-index: 2;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
   background: var(--surface);
-  padding: var(--xl) 0;
-  overflow: hidden;
-  --lauf: 46s;
+  padding: var(--xl) var(--lg);
 }
-.band-lauf { display: flex; width: max-content; animation: lauf var(--lauf) linear infinite; }
-.band:hover .band-lauf { animation-play-state: paused; }
-@keyframes lauf { to { transform: translateX(-50%); } }
 
 .band-liste {
-  display: flex; align-items: center; gap: var(--xl);
-  list-style: none; margin: 0; padding: 0 calc(var(--xl) / 2);
+  display: flex; flex-wrap: wrap;
+  align-items: center; justify-content: center;
+  gap: var(--md) var(--lg);
+  list-style: none; margin: 0 auto; padding: 0;
+  max-width: var(--breite);
 }
 .band-liste li {
   display: inline-flex; align-items: center; gap: var(--sm);
@@ -392,6 +401,23 @@ a { color: inherit; }
 }
 .band-liste .beispiel {
   font-family: var(--body); font-weight: 500; color: var(--ink-soft); opacity: .85;
+}
+
+/* Am Handy fliegen die Beispiele raus, und das ist gemessen, nicht geschätzt:
+   Mit ihnen ist jede Pille rund 300 px breit — bei 343 px nutzbarer Breite passt
+   nie eine zweite daneben, alle sechs stehen untereinander, und die Reihe wird
+   386 px hoch. Das ist eine halbe Bildschirmhöhe für ein Element, das nur zeigen
+   soll „es geht um mehr als Sport". Ohne sie stehen drei nebeneinander.
+   700 px ist der Punkt, ab dem zwei volle Pillen nebeneinander Platz haben.
+   Die Information geht nicht verloren — direkt darunter stehen die drei Schritte. */
+@media (max-width: 700px) {
+  .band-liste .beispiel { display: none; }
+  .band-liste { gap: var(--sm); }
+  /* 15px statt 17px: Bei voller Größe sind die drei breitesten Pillen zusammen
+     346 px — drei Pixel mehr, als bei 375 px Schirmbreite Platz ist. Das ergab
+     eine Treppe 3 | 2 | 1 mit einer einsam stehenden Pille in der letzten Zeile.
+     Zwei Punkt weniger, und es sind zwei volle Dreierzeilen. */
+  .band-liste li { padding: 8px var(--md); font-size: .95rem; }
 }
 
 /* ── Abschnitte ──────────────────────────────────────────────────────────── */
@@ -445,7 +471,14 @@ a { color: inherit; }
   border-radius: var(--r-md);
   font-family: var(--display); font-size: 1.15rem; font-weight: 800;
 }
-.schritt h3 { font-size: 1.28rem; margin: var(--md) 0 var(--md); letter-spacing: -.025em; }
+/* Die Mindesthöhe von zwei Zeilen ist kein Schönheitsdetail: Die drei Karten
+   stehen nebeneinander, und sobald EIN Titel umbricht, beginnt in dieser Karte
+   der Fließtext eine Zeile tiefer als in den anderen zwei. Ohne die Mindesthöhe
+   zerlegt der nächste Textumbau das Raster wieder — und niemand denkt daran. */
+.schritt h3 {
+  font-size: 1.28rem; margin: var(--md) 0 var(--md); letter-spacing: -.025em;
+  min-height: calc(2 * 1.28rem * 1.25);
+}
 .schritt p { color: var(--ink-soft); font-size: 1rem; }
 .schritt strong { color: var(--ink); font-weight: 600; }
 
@@ -511,7 +544,6 @@ a { color: inherit; }
 .js .namen li span { background-size: 0% .12em; }
 .js .namen li.sichtbar span { background-size: 100% .12em; }
 
-.wir-nach { color: var(--ink-soft); max-width: var(--mass); }
 
 /* Schluss */
 .schluss {
@@ -593,5 +625,4 @@ a { color: inherit; }
   .js [data-auf], .js .reveal { opacity: 1; transform: none; }
   .hero h1 em::after { transform: scaleX(1); }
   .js .namen li span { background-size: 100% .12em; }
-  .band-lauf { animation: none; }
 }
