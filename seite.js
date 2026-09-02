@@ -21,13 +21,16 @@
      `querySelectorAll` bleibt trotzdem stehen: Es tut bei einer Liste dasselbe
      und macht aus einer zweiten kein kaputtes Skript. */
 
+  /* Seit Phase 14 gezeichnete Icons statt Emojis — die Namen kommen aus
+     `icons.js` und heissen dort genauso wie in `src/config/categories.ts`
+     der App. Wer eine Kategorie umbenennt, muss BEIDE Stellen anfassen. */
   const KATEGORIEN = [
-    { id: 'sport',    emoji: '🏃', label: 'Sport',   beispiel: 'Tennis, Laufen, Bouldern' },
-    { id: 'food',     emoji: '☕', label: 'Essen',   beispiel: 'Kaffee, Mittagessen, Kochen' },
-    { id: 'study',    emoji: '📚', label: 'Lernen',  beispiel: 'Schularbeit, Projektpartner' },
-    { id: 'culture',  emoji: '🎬', label: 'Kultur',  beispiel: 'Kino, Konzert, Fortgehen' },
-    { id: 'outdoor',  emoji: '🌳', label: 'Draußen', beispiel: 'Donauinsel, Picknick' },
-    { id: 'creative', emoji: '🎨', label: 'Kreativ', beispiel: 'Fotografieren, Zeichnen' },
+    { id: 'sport',    icon: 'laufen', label: 'Sport',   beispiel: 'Tennis, Laufen, Bouldern' },
+    { id: 'food',     icon: 'tasse',  label: 'Essen',   beispiel: 'Kaffee, Mittagessen, Kochen' },
+    { id: 'study',    icon: 'buch',   label: 'Lernen',  beispiel: 'Schularbeit, Projektpartner' },
+    { id: 'culture',  icon: 'ticket', label: 'Kultur',  beispiel: 'Kino, Konzert, Fortgehen' },
+    { id: 'outdoor',  icon: 'baum',   label: 'Draußen', beispiel: 'Donauinsel, Picknick' },
+    { id: 'creative', icon: 'pinsel', label: 'Kreativ', beispiel: 'Fotografieren, Zeichnen' },
   ];
 
   document.querySelectorAll('.band-liste').forEach((liste) => {
@@ -35,7 +38,7 @@
       const li = document.createElement('li');
       li.dataset.kat = k.id;
       li.innerHTML =
-        `<span aria-hidden="true">${k.emoji}</span> ${k.label}` +
+        `${icon(k.icon)} ${k.label}` +
         `<span class="beispiel">${k.beispiel}</span>`;
       liste.appendChild(li);
     });

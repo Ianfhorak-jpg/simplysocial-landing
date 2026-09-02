@@ -304,10 +304,15 @@ a { color: inherit; }
   font-size: .92rem;
 }
 .wer { display: inline-flex; align-items: center; gap: var(--sm); font-weight: 600; }
+/* Seit Phase 14 Initialen statt Emoji — wie in der App (`SsAvatar`). Die Farbe
+   kommt aus der Kategorievariable der Karte, nicht aus einem Hash: Auf der
+   Landing-Page steht genau eine Person, da wäre ein Streuwert Theater. */
 .avatar {
   display: inline-grid; place-items: center;
   width: 30px; height: 30px; border-radius: var(--r-pill);
-  background: var(--soft); font-size: .95rem;
+  background: var(--soft); color: var(--on-soft);
+  font-family: var(--display); font-weight: 700;
+  font-size: .82rem; letter-spacing: .03em;
 }
 .plaetze { color: var(--ink-soft); }
 
@@ -324,7 +329,14 @@ a { color: inherit; }
   text-align: center;
   animation: auftauchen .45s var(--ease) both;
 }
-.haken { font-style: normal; }
+/* ── Icons ────────────────────────────────────────────────────────────────
+   Ein SVG ist im Browser ein Inline-Element und setzt sich auf die Grundlinie
+   der Textzeile — dadurch steht es zu tief. `vertical-align: -.16em` hebt es
+   auf die optische Mitte; `flex-shrink: 0` verhindert, dass es in einer engen
+   Pille zusammengedrückt wird (dann wäre der Kreis ein Ei). */
+.ss-icon { vertical-align: -.16em; flex-shrink: 0; }
+.haken { display: inline-flex; align-items: center; }
+.haken .ss-icon { vertical-align: 0; }
 
 /* Der Fächer. Auf schmalen Schirmen fällt er weg — dort steht nur die Karte,
    die man anfassen kann. Drei gestapelte Karten am Handy sind Deko, die scrollt. */

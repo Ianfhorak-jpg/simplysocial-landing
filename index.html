@@ -73,7 +73,7 @@
     <article class="karte karte-hinten" data-kat="study" aria-hidden="true">
       <span class="streifen"></span>
       <div class="karte-inhalt">
-        <span class="pille">📚 Lernen</span>
+        <span class="pille"><span data-icon="buch"></span> Lernen</span>
         <h3>Mathe-Schularbeit lernen</h3>
         <p class="meta">Morgen 15:00 · 1070 Wien</p>
       </div>
@@ -82,19 +82,19 @@
     <article class="karte karte-mitte" data-kat="sport" id="spiel">
       <span class="streifen"></span>
       <div class="karte-inhalt">
-        <span class="pille">🏃 Sport</span>
+        <span class="pille"><span data-icon="laufen"></span> Sport</span>
         <h3>Tennis spielen</h3>
         <p class="meta">Heute 17:00 · 1220 Wien</p>
         <p class="notiz">Hab zwei Schläger dabei.</p>
         <div class="karte-fuss">
-          <span class="wer"><span class="avatar">🌿</span> Lea</span>
+          <span class="wer"><span class="avatar">L</span> Lea</span>
           <span class="plaetze">2 Plätze frei</span>
         </div>
         <button class="knopf knopf-voll" data-farbe="sport" id="dabei">
           Bin dabei
         </button>
         <p class="verabredet" id="verabredet" hidden>
-          <span class="haken">🎉</span> Ihr seid verabredet.
+          <span class="haken" data-icon="funken" data-icon-groesse="17"></span> Ihr seid verabredet.
         </p>
       </div>
     </article>
@@ -102,7 +102,7 @@
     <article class="karte karte-vorn" data-kat="food" aria-hidden="true">
       <span class="streifen"></span>
       <div class="karte-inhalt">
-        <span class="pille">☕ Essen</span>
+        <span class="pille"><span data-icon="tasse"></span> Essen</span>
         <h3>Kaffee nach der Schule</h3>
         <p class="meta">Heute 16:00 · 1140 Wien</p>
       </div>
@@ -228,6 +228,7 @@
 
 <div class="konfetti-buehne" id="konfetti" aria-hidden="true"></div>
 
+<script src="icons.js"></script>
 <script src="seite.js"></script>
 </body>
 </html>
