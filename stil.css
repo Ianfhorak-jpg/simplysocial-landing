@@ -638,3 +638,11 @@ a { color: inherit; }
   .hero h1 em::after { transform: scaleX(1); }
   .js .namen li span { background-size: 100% .12em; }
 }
+
+/* Die rechtlichen Adressen in der Fußzeile. Sie stehen ab dem 2026-09-28 im
+   App-Store-Eintrag — deshalb müssen sie von der Startseite aus erreichbar sein
+   und dürfen nicht nur in der sitemap stehen. Leiser als der Rest der Fußzeile:
+   Sie sollen auffindbar sein, nicht werben. */
+.fuss-rechtlich { margin-top: var(--sm); font-size: 14px; opacity: .75; }
+.fuss-rechtlich a { color: inherit; text-decoration: none; }
+.fuss-rechtlich a:hover { text-decoration: underline; }

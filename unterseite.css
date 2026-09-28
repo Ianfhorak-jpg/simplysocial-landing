@@ -1,0 +1,130 @@
+/* ═══════════════════════════════════════════════════════════════════════════
+   UNTERSEITEN — Datenschutz und Hilfe.
+
+   Diese Datei ist NICHT der Stil der Startseite, sie ergänzt ihn. `stil.css`
+   bringt Farben, Schriften und Knöpfe mit; hier steht nur, was ein langer
+   Fließtext zusätzlich braucht: Lesebreite, Überschriftenabstände, Tabellen.
+
+   ⚠️ Warum überhaupt zwei Seiten und nicht ein Abschnitt auf der Startseite:
+   Apple ruft die Datenschutz-Adresse direkt auf und erwartet dort eine
+   Datenschutzerklärung — nicht eine Startseite, auf der man erst scrollen muss.
+   Ein Anker (`#datenschutz`) reicht dafür nicht; Apple hat schon Apps
+   zurückgewiesen, deren Link auf eine Marketing-Seite zeigte.
+   ═════════════════════════════════════════════════════════════════════════ */
+
+.rt {
+  max-width: var(--mass);
+  margin: 0 auto;
+  padding: var(--xxxl) var(--lg) 96px;
+}
+
+.rt-zurueck {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sm);
+  color: var(--ink-soft);
+  text-decoration: none;
+  font-size: 15px;
+  margin-bottom: var(--xl);
+}
+.rt-zurueck:hover { color: var(--ink); }
+
+.rt h1 {
+  font-family: var(--display);
+  font-size: clamp(30px, 5vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--md);
+}
+
+.rt h2 {
+  font-family: var(--display);
+  font-size: clamp(20px, 3vw, 25px);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  margin: var(--xxxl) 0 var(--md);
+  padding-top: var(--xl);
+  border-top: 1px solid var(--line);
+}
+
+.rt h3 {
+  font-family: var(--body);
+  font-size: 17px;
+  font-weight: 700;
+  margin: var(--xl) 0 var(--xs);
+}
+
+.rt p, .rt li, .rt td, .rt h1, .rt h2, .rt h3 {
+  /* ⚠️ Deutscher Fließtext in einer schmalen Spalte bricht NICHT von selbst.
+     Bei 390 px Schirm bleiben nach der Polsterung 358 px — und dagegen stehen
+     „Weiterleitungsadresse", „Datenschutzbehörde", „Nutzungsbedingungen" und vor
+     allem `privaterelay.appleid.com`, das an GAR KEINER Stelle umbrechen darf,
+     weil CSS in einer Adresse keine Trennstelle sieht.
+     Der Überlauf wäre hier zusätzlich UNSICHTBAR: `stil.css` setzt auf `body`
+     ein `overflow-x: hidden`, das den Text still abschneidet, statt eine
+     Bildlaufleiste zu zeigen. Genau so gefunden am 2026-09-28 — am Bild, nicht
+     am Code. */
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.rt p, .rt li {
+  font-size: 16.5px;
+  line-height: 1.65;
+  color: var(--ink);
+}
+.rt p { margin: 0 0 var(--lg); }
+.rt ul { margin: 0 0 var(--lg); padding-left: 1.2em; }
+.rt li { margin-bottom: var(--sm); }
+
+.rt a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+
+/* Der Stand ganz oben — kleiner als der Text, aber vor ihm. Wer eine
+   Datenschutzerklärung prüft, sucht als Erstes das Datum. */
+.rt-stand {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0 0 var(--xxl);
+}
+
+/* Der hervorgehobene Kasten. Nur für Sätze, die jemand auch dann mitnehmen
+   soll, wenn er den Rest überspringt. */
+.rt-kasten {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--lg) var(--xl);
+  margin: 0 0 var(--xl);
+}
+.rt-kasten p:last-child { margin-bottom: 0; }
+
+/* Die Datentabelle. Auf dem Handy wird sie zu Blöcken — eine vierspaltige
+   Tabelle auf 360 px ist unlesbar, und quer scrollen liest niemand. */
+.rt-tab { width: 100%; border-collapse: collapse; margin: 0 0 var(--xl); font-size: 15.5px; }
+.rt-tab th, .rt-tab td { text-align: left; padding: var(--md) var(--sm); border-bottom: 1px solid var(--line); vertical-align: top; }
+.rt-tab th { font-weight: 700; color: var(--ink-soft); font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+.rt-tab td:first-child { font-weight: 600; }
+
+@media (max-width: 640px) {
+  .rt-tab, .rt-tab tbody, .rt-tab tr, .rt-tab td { display: block; width: 100%; }
+  .rt-tab thead { display: none; }
+  .rt-tab tr { border-bottom: 1px solid var(--line); padding: var(--md) 0; }
+  .rt-tab td { border: 0; padding: 2px 0; }
+  .rt-tab td:first-child { font-size: 16px; }
+  .rt-tab td[data-k]::before { content: attr(data-k) " — "; color: var(--ink-soft); font-weight: 600; }
+}
+
+.rt-fuss {
+  margin-top: 64px;
+  padding-top: var(--xl);
+  border-top: 1px solid var(--line);
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+/* Der Gurt gegen genau den Fehler von oben: Sollte doch einmal etwas breiter
+   sein als der Schirm, bleibt es sichtbar statt abgeschnitten. `.rt` bekommt
+   dafür eine eigene Bildlaufleiste — `body` darf sie wegen `overflow-x: hidden`
+   (stil.css) nicht zeigen. */
+.rt { overflow-x: clip; }
+.rt table { max-width: 100%; }
